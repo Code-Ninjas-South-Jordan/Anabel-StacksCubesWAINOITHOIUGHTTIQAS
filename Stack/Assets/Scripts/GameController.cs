@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         NewBlock();
+        currentCube.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.HSVToRGB((1 / 100f) % 1f, 1f, 1f));
     }
 
     // Update is called once per frame
@@ -31,6 +32,12 @@ public class GameController : MonoBehaviour
         var time = Mathf.Abs(Time.realtimeSinceStartup % 2f - 1f);
         var pos1 = lastCube.transform.position + Vector3.up * 10f;
         var pos2 = pos1 + ((Level % 2 == 0) ? Vector3.left : Vector3.forward) * 120;
+        text.text = "Current Score: " + Level;
+        /*Debug.LogError(Level);
+        Debug.LogWarning((Level / 100f) % 1f);
+        Debug.LogWarning(1f);
+        Debug.LogWarning(1f);
+        */
         if(Level % 2 == 0)
         {
             currentCube.transform.position = Vector3.Lerp(pos2, pos1, time);
@@ -63,7 +70,7 @@ public class GameController : MonoBehaviour
         lastCube = currentCube;
         currentCube = Instantiate(lastCube);
         currentCube.name = Level + "";
-        currentCube.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.HSVToRGB((Level / 100f) % 1f, 1f, 1f));
+        currentCube.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.HSVToRGB(((Level + 1) / 100f) % 1f, 1f, 1f));
         Level++;
         Camera.main.transform.position = currentCube.transform.position + new Vector3(100, 100, 100);
         Camera.main.transform.LookAt(currentCube.transform.position);
